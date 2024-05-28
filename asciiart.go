@@ -8,11 +8,11 @@ import (
 
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Println("pass 3 arguments i.e usage: go run . hello thinkertoy.txt")
+		fmt.Println("Pass 3 arguments, i.e., usage: go run . hello thinkertoy.txt")
 		return
 	}
 	inputFile := os.Args[2]
-	// read the banner file
+	// Read the banner file
 	fileContent, err := os.ReadFile(inputFile)
 	if err != nil {
 		fmt.Println("Error reading file:", err)
@@ -31,14 +31,21 @@ func main() {
 		return
 	}
 
+	// Replace occurrences of "\\n" with "\n" in the input
+	input = strings.ReplaceAll(input, "\\n", "\n")
+
 	// Split input by newline escape sequence
-	words := strings.Split(input, "\\n")
+	words := strings.Split(input, "\n")
 	for _, word := range words {
-		for _, char := range word {
-			// To check for non-ascii
-			if !(char >= ' ' && char <= '~') {
-				fmt.Println("Non-ascii detected!! Check and try again")
-				return
+		if word == "" {
+			fmt.Println() // Print an empty line for empty input
+		} else {
+			for _, char := range word {
+				// To check for non-ascii
+				if !(char >= ' ' && char <= '~') {
+					fmt.Println("Non-ASCII detected!! Check and try again")
+					return
+				}
 			}
 			for i := 0; i < 8; i++ {
 				for _, char := range word {
@@ -47,7 +54,6 @@ func main() {
 				}
 				fmt.Println()
 			}
-
 		}
 	}
 }
