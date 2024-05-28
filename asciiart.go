@@ -12,15 +12,10 @@ func main() {
 		return
 	}
 	inputFile := os.Args[2]
-
+	// read the banner file
 	fileContent, err := os.ReadFile(inputFile)
 	if err != nil {
 		fmt.Println("Error reading file:", err)
-		return
-	}
-	err = FileContentcheck(fileContent)
-	if err != nil {
-		fmt.Println("Error:", err)
 		return
 	}
 	var fileLines []string
@@ -39,28 +34,20 @@ func main() {
 	// Split input by newline escape sequence
 	words := strings.Split(input, "\\n")
 	for _, word := range words {
-		for i := 0; i < 8; i++ {
-			for _, letter := range word {
-				// Print the corresponding line from the file content
-				fmt.Print(fileLines[i+(int(letter-' ')*9)+1])
+		for _, char := range word {
+			// To check for non-ascii
+			if !(char >= ' ' && char <= '~') {
+				fmt.Println("Non-ascii detected!! Check and try again")
+				return
 			}
-			fmt.Println()
-		}
-	}
-}
+			for i := 0; i < 8; i++ {
+				for _, char := range word {
+					// Print the corresponding line from the banner content
+					fmt.Print(fileLines[i+(int(char-' ')*9)+1])
+				}
+				fmt.Println()
+			}
 
-// FileContentcheck checks the validity of the file content
-func FileContentcheck(content []byte) error {
-	var fileLines []string
-	for _, contents := range content {
-		if contents < ' ' || contents > '~' {
-			fmt.Println("non-ASCII character detected in file content")
-			os.Exit(0)
 		}
 	}
-	if len(fileLines) != 856 {
-		fmt.Println("file content has been tampered with")
-		os.Exit(0)
-	}
-	return nil
 }
