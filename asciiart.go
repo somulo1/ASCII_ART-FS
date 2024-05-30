@@ -8,10 +8,22 @@ import (
 
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Println("Pass 3 arguments, i.e., usage: go run . hello thinkertoy.txt")
+		fmt.Println("Pass 3 arguments, i.e., usage: go run . \"hello\" thinkertoy.txt")
 		return
 	}
-	inputFile := os.Args[2]
+	inputFile := ""
+	switch os.Args[2] {
+	case "standard":
+		inputFile = "standard.txt"
+	case "shadow":
+		inputFile = "shadow.txt"
+	case "thinkertoy":
+		inputFile = "thinkertoy.txt"
+	default:
+		fmt.Println("Invalid input file as specified")
+		return
+	}
+
 	// Read the banner file
 	fileContent, err := os.ReadFile(inputFile)
 	if err != nil {
