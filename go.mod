@@ -1,3 +1,3 @@
-module ascii-art
+module ascii-art-fs
 
-go 1.18
+go 1.22.1
